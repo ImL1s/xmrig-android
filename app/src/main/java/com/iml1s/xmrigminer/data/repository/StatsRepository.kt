@@ -38,7 +38,10 @@ class StatsRepository @Inject constructor() {
     }
 
     fun updateCpuUsage(usage: Float) {
-        _stats.update { it.copy(cpuUsage = usage) }
+        // 只在有效值時更新（避免閃爍）
+        if (usage > 0f) {
+            _stats.update { it.copy(cpuUsage = usage) }
+        }
     }
 
     fun updateTemperature(temp: Float) {

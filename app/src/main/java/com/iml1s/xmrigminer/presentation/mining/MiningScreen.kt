@@ -227,7 +227,11 @@ fun StatusCard(
             // CPU 使用率
             StatRow(
                 label = "CPU 使用率",
-                value = if (isRunning && stats.cpuUsage == 0f) "計算中..." else "${stats.cpuUsage.roundToInt()}%",
+                value = when {
+                    stats.cpuUsage > 0f -> "${stats.cpuUsage.roundToInt()}%"
+                    isRunning -> "計算中..."
+                    else -> "-"
+                },
                 icon = Icons.Default.Memory
             )
 
@@ -351,7 +355,10 @@ fun StatsDetailCard(
 
             Spacer(Modifier.height(12.dp))
 
-            DetailRow("CPU 使用率", if (stats.cpuUsage == 0f) "-" else "${stats.cpuUsage.roundToInt()}%")
+            DetailRow("CPU 使用率", when {
+                stats.cpuUsage > 0f -> "${stats.cpuUsage.roundToInt()}%"
+                else -> "-"
+            })
             DetailRow("難度", if (stats.difficulty == 0L) "-" else stats.difficulty.toString())
             DetailRow("算力 (10s)", if (stats.hashrate10s > 0) "%.2f H/s".format(stats.hashrate10s) else "-")
             DetailRow("算力 (60s)", if (stats.hashrate60s > 0) "%.2f H/s".format(stats.hashrate60s) else "-")
