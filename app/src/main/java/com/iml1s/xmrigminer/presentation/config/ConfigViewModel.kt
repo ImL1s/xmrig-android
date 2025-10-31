@@ -1,0 +1,187 @@
+package com.iml1s.xmrigminer.presentation.config
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.iml1s.xmrigminer.data.model.MiningConfig
+import com.iml1s.xmrigminer.data.model.Pool
+import com.iml1s.xmrigminer.data.repository.ConfigRepository
+import com.iml1s.xmrigminer.data.repository.PoolRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ConfigViewModel @Inject constructor(
+    private val configRepository: ConfigRepository,
+    private val poolRepository: PoolRepository
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow<ConfigUiState>(ConfigUiState.Loading)
+    val uiState: StateFlow<ConfigUiState> = _uiState.asStateFlow()
+
+    private val _uiEffect = Channel<ConfigUiEffect>()
+    val uiEffect = _uiEffect.receiveAsFlow()
+
+    private var currentConfig: MiningConfig = MiningConfig()
+    private var availablePools: List<Pool> = emptyList()
+
+    init {
+        loadConfigAndPools()
+    }
+
+    private fun loadConfigAndPools() {
+        viewModelScope.launch {
+            try {
+                availablePools = poolRepository.getPools()
+                
+                configRepository.getConfig().collect { config ->
+                    currentConfig = config
+                    val selectedPool = availablePools.find { pool ->
+                        pool.url == config.poolUrl || pool.sslUrl == config.poolUrl
+                    }
+                    
+                    _uiState.value = ConfigUiState.Success(
+                        config = config,
+                        pools = availablePools,
+                        selectedPool = selectedPool
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.value = ConfigUiState.Error(e.message ?: "Failed to load configuration")
+            }
+        }
+    }
+
+    fun onEvent(event: ConfigUiEvent) {
+        when (event) {
+            is ConfigUiEvent.PoolSelected -> handlePoolSelected(event.pool)
+            is ConfigUiEvent.WalletAddressChanged -> handleWalletAddressChanged(event.address)
+            is ConfigUiEvent.WorkerNameChanged -> handleWorkerNameChanged(event.name)
+            is ConfigUiEvent.ThreadsChanged -> handleThreadsChanged(event.threads)
+            is ConfigUiEvent.MaxCpuUsageChanged -> handleMaxCpuUsageChanged(event.usage)
+            is ConfigUiEvent.TlsToggled -> handleTlsToggled(event.enabled)
+            is ConfigUiEvent.CustomPoolUrlChanged -> handleCustomPoolUrlChanged(event.url)
+            is ConfigUiEvent.SaveConfig -> handleSaveConfig()
+            is ConfigUiEvent.ResetToDefaults -> handleResetToDefaults()
+        }
+    }
+
+    private fun handlePoolSelected(pool: Pool) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(
+            poolUrl = pool.getUrl(currentConfig.useTls)
+        )
+        updateConfig(newConfig, state.copy(selectedPool = pool))
+    }
+
+    private fun handleWalletAddressChanged(address: String) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(walletAddress = address.trim())
+        val error = validateWalletAddress(address.trim())
+        updateConfig(newConfig, state.copy(validationError = error))
+    }
+
+    private fun handleWorkerNameChanged(name: String) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(workerName = name)
+        updateConfig(newConfig, state)
+    }
+
+    private fun handleThreadsChanged(threads: Int) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(threads = threads.coerceIn(1, Runtime.getRuntime().availableProcessors()))
+        updateConfig(newConfig, state)
+    }
+
+    private fun handleMaxCpuUsageChanged(usage: Int) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(maxCpuUsage = usage.coerceIn(10, 100))
+        updateConfig(newConfig, state)
+    }
+
+    private fun handleTlsToggled(enabled: Boolean) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(useTls = enabled)
+        
+        // Update pool URL if a pool is selected
+        state.selectedPool?.let { pool ->
+            val updatedConfig = newConfig.copy(poolUrl = pool.getUrl(enabled))
+            updateConfig(updatedConfig, state)
+        } ?: updateConfig(newConfig, state)
+    }
+
+    private fun handleCustomPoolUrlChanged(url: String) {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        val newConfig = currentConfig.copy(poolUrl = url)
+        updateConfig(newConfig, state.copy(selectedPool = null))
+    }
+
+    private fun handleSaveConfig() {
+        val state = _uiState.value as? ConfigUiState.Success ?: return
+        
+        if (!currentConfig.isValid()) {
+            viewModelScope.launch {
+                _uiEffect.send(ConfigUiEffect.ShowError("Please fill in all required fields"))
+            }
+            return
+        }
+
+        if (state.validationError != null) {
+            viewModelScope.launch {
+                _uiEffect.send(ConfigUiEffect.ShowError(state.validationError))
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            try {
+                _uiState.value = state.copy(isValidating = true)
+                configRepository.saveConfig(currentConfig)
+                _uiEffect.send(ConfigUiEffect.ConfigSaved)
+                _uiState.value = state.copy(isValidating = false)
+            } catch (e: Exception) {
+                _uiState.value = state.copy(isValidating = false)
+                _uiEffect.send(ConfigUiEffect.ShowError(e.message ?: "Failed to save configuration"))
+            }
+        }
+    }
+
+    private fun handleResetToDefaults() {
+        viewModelScope.launch {
+            try {
+                configRepository.clear()
+                loadConfigAndPools()
+            } catch (e: Exception) {
+                _uiEffect.send(ConfigUiEffect.ShowError("Failed to reset configuration"))
+            }
+        }
+    }
+
+    private fun updateConfig(newConfig: MiningConfig, newState: ConfigUiState.Success) {
+        currentConfig = newConfig
+        _uiState.value = newState.copy(config = newConfig)
+    }
+
+    private fun validateWalletAddress(address: String): String? {
+        if (address.isBlank()) return "Wallet address is required"
+        
+        // Monero primary address validation (starts with 4, length 95)
+        if (address.startsWith("4") && address.length == 95) {
+            return null
+        }
+        
+        // Monero integrated address (starts with 8, length 106)
+        if (address.startsWith("8") && address.length == 106) {
+            return null
+        }
+        
+        // Monero subaddress (starts with 8, length 95)
+        if (address.startsWith("8") && address.length == 95) {
+            return null
+        }
+        
+        return "Invalid Monero wallet address format"
+    }
+}

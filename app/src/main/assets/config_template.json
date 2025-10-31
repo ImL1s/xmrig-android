@@ -1,0 +1,33 @@
+{
+  "autosave": false,
+  "cpu": {
+    "enabled": true,
+    "max-threads-hint": 75,
+    "priority": 1,
+    "asm": true,
+    "argon2-impl": "auto"
+  },
+  "pools": [
+    {
+      "url": "pool.supportxmr.com:3333",
+      "user": "YOUR_WALLET_ADDRESS",
+      "pass": "android",
+      "keepalive": true,
+      "tls": true
+    }
+  ],
+  "donate-level": 0,
+  "log-file": null,
+  "print-time": 60,
+  "health-print-time": 60,
+  "retries": 5,
+  "retry-pause": 5,
+  "api": null,
+  "http": null,
+  "randomx": {
+    "mode": "auto",
+    "1gb-pages": false,
+    "rdmsr": false,
+    "wrmsr": false
+  }
+}

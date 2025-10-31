@@ -1,0 +1,30 @@
+[
+  {
+    "name": "SupportXMR",
+    "url": "pool.supportxmr.com:3333",
+    "ssl_url": "pool.supportxmr.com:443",
+    "description": "Popular Monero pool with low fees",
+    "fee": "0.6%"
+  },
+  {
+    "name": "HashVault",
+    "url": "pool.hashvault.pro:3333",
+    "ssl_url": "pool.hashvault.pro:443",
+    "description": "Reliable pool with good uptime",
+    "fee": "0.9%"
+  },
+  {
+    "name": "MoneroOcean",
+    "url": "gulf.moneroocean.stream:10128",
+    "ssl_url": "gulf.moneroocean.stream:20128",
+    "description": "Auto-switching profit pool",
+    "fee": "0%"
+  },
+  {
+    "name": "C3Pool",
+    "url": "xmr.c3pool.com:13333",
+    "ssl_url": "xmr.c3pool.com:23333",
+    "description": "Low minimum payout",
+    "fee": "0.9%"
+  }
+]
