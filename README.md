@@ -205,7 +205,8 @@ Earlier versions had issues executing binaries in the `files/` directory.
 **Solution**: XMRig is now compiled as a `.so` library and loaded from `lib/`.
 
 ## 📄 License
-This project is under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
 
 ### XMRig License
 XMRig uses the GPLv3 license: https://github.com/xmrig/xmrig

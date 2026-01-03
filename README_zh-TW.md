@@ -360,7 +360,7 @@ fun toJson(): String {
 
 ## 📄 License
 
-本項目採用 MIT License，請參閱 [LICENSE](LICENSE) 文件。
+本項目採用 GNU General Public License v3.0，請參閱 [LICENSE](LICENSE) 文件。
 
 ### XMRig License
 XMRig 採用 GPLv3 許可證，詳見：https://github.com/xmrig/xmrig
