@@ -223,7 +223,7 @@ class MiningWorker @AssistedInject constructor(
         var lastCpuTime = 0L
         var lastWallTime = 0L
         
-        while (currentCoroutineContext().isActive && process?.isAlive == true) {
+        while (currentCoroutineContext().isActive && isProcessAlive(process)) {
             try {
                 // 讀取 /proc/[pid]/stat 取得 CPU 時間（這個應該是可讀的）
                 val statFile = File("/proc/$pid/stat")
@@ -269,6 +269,20 @@ class MiningWorker @AssistedInject constructor(
                 Timber.e(e, "Error monitoring CPU usage")
                 delay(5000)
             }
+        }
+    }
+
+    private fun isProcessAlive(process: Process?): Boolean {
+        if (process == null) return false
+        return try {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                process.isAlive
+            } else {
+                process.exitValue()
+                false
+            }
+        } catch (e: IllegalThreadStateException) {
+            true
         }
     }
 

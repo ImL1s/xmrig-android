@@ -124,10 +124,7 @@ class MiningViewModel @Inject constructor(
 
                 Timber.i("Mining and monitoring work enqueued")
                 
-                // Debug: Check work status after a short delay
-                kotlinx.coroutines.delay(1000)
-                val workInfos = workManager.getWorkInfosForUniqueWork(MiningWorker.WORK_NAME).await()
-                Timber.i("MiningWorker status: ${workInfos.firstOrNull()?.state}")
+
                 
                 _effects.send(MiningEffect.ShowToast("挖礦已啟動"))
                 

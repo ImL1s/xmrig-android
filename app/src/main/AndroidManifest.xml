@@ -44,16 +44,7 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".service.XMRigService"
-            android:enabled="true"
-            android:exported="false"
-            android:foregroundServiceType="dataSync" />
 
-        <service
-            android:name=".service.MonitorService"
-            android:enabled="true"
-            android:exported="false" />
 
         <!-- WorkManager's SystemForegroundService needs foregroundServiceType -->
         <service
