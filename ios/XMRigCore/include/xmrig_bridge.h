@@ -80,6 +80,13 @@ void xmrig_cleanup(void);
  */
 const char* xmrig_version(void);
 
+/**
+ * Update stats from external source (e.g., log parsing)
+ * This allows the iOS layer to feed stats back if it parses XMRig output
+ */
+void xmrig_update_stats(double hr10s, double hr60s, double hr15m,
+                        uint64_t accepted, uint64_t rejected, int threads);
+
 #ifdef __cplusplus
 }
 #endif
