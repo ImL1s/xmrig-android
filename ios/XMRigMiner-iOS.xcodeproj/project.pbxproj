@@ -1,0 +1,406 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A52A514B935340D5E5BEAE4 /* XMRigMinerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 220D92C49700F66109121499 /* XMRigMinerApp.swift */; };
+		0C39E502208A4EDDE0E4C4DD /* MiningConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821CDD6A92C86ADCF4FF89F9 /* MiningConfig.swift */; };
+		0FD02C2C813713C41844A1FC /* XMRigWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8159C28F8B627AC8DB161C31 /* XMRigWrapper.swift */; };
+		38590618B974A35882963CCA /* ConfigView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE400D868D26D12A20527EBA /* ConfigView.swift */; };
+		6D5574F55C7ACEB9F9D382D6 /* XMRigBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = CEFA1694CE518970F3F4CAB2 /* XMRigBridge.mm */; };
+		C3270DD7144ACAF7997A7D1B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF0A2017E5C5D43FE93FF429 /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		220D92C49700F66109121499 /* XMRigMinerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMRigMinerApp.swift; sourceTree = "<group>"; };
+		5524A87543E55E6FD9DABE73 /* xmrig_bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = xmrig_bridge.h; sourceTree = "<group>"; };
+		8159C28F8B627AC8DB161C31 /* XMRigWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMRigWrapper.swift; sourceTree = "<group>"; };
+		821CDD6A92C86ADCF4FF89F9 /* MiningConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiningConfig.swift; sourceTree = "<group>"; };
+		B98070E037D367581FA0485E /* XMRigMiner-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XMRigMiner-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		CEFA1694CE518970F3F4CAB2 /* XMRigBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = XMRigBridge.mm; sourceTree = "<group>"; };
+		DE400D868D26D12A20527EBA /* ConfigView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigView.swift; sourceTree = "<group>"; };
+		EF0A2017E5C5D43FE93FF429 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F30749C64DF3EEB310E3CC70 /* XMRigMiner.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = XMRigMiner.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2165C60D05C87998672D3168 /* XMRigMiner-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B1C78F9B04D14D700BA77ECB /* Sources */,
+			);
+			path = "XMRigMiner-iOS";
+			sourceTree = "<group>";
+		};
+		2B3E500F6917FC50E8520626 /* XMRigCore */ = {
+			isa = PBXGroup;
+			children = (
+				4CB985633D1F20056550764C /* include */,
+			);
+			path = XMRigCore;
+			sourceTree = "<group>";
+		};
+		37939846A08EFF3489F43AD0 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				EF0A2017E5C5D43FE93FF429 /* ContentView.swift */,
+				220D92C49700F66109121499 /* XMRigMinerApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		4CB985633D1F20056550764C /* include */ = {
+			isa = PBXGroup;
+			children = (
+				5524A87543E55E6FD9DABE73 /* xmrig_bridge.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		75FB831E26489F5A45F9ACCD /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				8159C28F8B627AC8DB161C31 /* XMRigWrapper.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		9276B5DD4D52117CC4A45B22 /* Bridge */ = {
+			isa = PBXGroup;
+			children = (
+				CEFA1694CE518970F3F4CAB2 /* XMRigBridge.mm */,
+				B98070E037D367581FA0485E /* XMRigMiner-iOS-Bridging-Header.h */,
+			);
+			path = Bridge;
+			sourceTree = "<group>";
+		};
+		A71BE9E30C9BAB3F4C3B8877 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				DE400D868D26D12A20527EBA /* ConfigView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B1C78F9B04D14D700BA77ECB /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				37939846A08EFF3489F43AD0 /* App */,
+				9276B5DD4D52117CC4A45B22 /* Bridge */,
+				D75A18E2CB24DEFA491F242B /* Models */,
+				75FB831E26489F5A45F9ACCD /* Services */,
+				A71BE9E30C9BAB3F4C3B8877 /* Views */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		C26DD817D258F41E220AF667 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F30749C64DF3EEB310E3CC70 /* XMRigMiner.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D650924615E345C4C7269BBB = {
+			isa = PBXGroup;
+			children = (
+				2B3E500F6917FC50E8520626 /* XMRigCore */,
+				2165C60D05C87998672D3168 /* XMRigMiner-iOS */,
+				C26DD817D258F41E220AF667 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D75A18E2CB24DEFA491F242B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				821CDD6A92C86ADCF4FF89F9 /* MiningConfig.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		63CE8D1A76CB4EB9B7B47171 /* XMRigMiner */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27489F42EFFB06D060C6CDFF /* Build configuration list for PBXNativeTarget "XMRigMiner" */;
+			buildPhases = (
+				BCBE84FDE3F2A08390F2D8D9 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = XMRigMiner;
+			packageProductDependencies = (
+			);
+			productName = XMRigMiner;
+			productReference = F30749C64DF3EEB310E3CC70 /* XMRigMiner.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A716BF52502408E62AFDADF3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					63CE8D1A76CB4EB9B7B47171 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = B60EF72BB9B748924548F954 /* Build configuration list for PBXProject "XMRigMiner-iOS" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = D650924615E345C4C7269BBB;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				63CE8D1A76CB4EB9B7B47171 /* XMRigMiner */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BCBE84FDE3F2A08390F2D8D9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				38590618B974A35882963CCA /* ConfigView.swift in Sources */,
+				C3270DD7144ACAF7997A7D1B /* ContentView.swift in Sources */,
+				0C39E502208A4EDDE0E4C4DD /* MiningConfig.swift in Sources */,
+				6D5574F55C7ACEB9F9D382D6 /* XMRigBridge.mm in Sources */,
+				0A52A514B935340D5E5BEAE4 /* XMRigMinerApp.swift in Sources */,
+				0FD02C2C813713C41844A1FC /* XMRigWrapper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		16FBF24A3B4197CE98900E6F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "XMRigMiner-iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iml1s.xmrigminer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = Debug;
+		};
+		3DCD48C3895016D6AFD97493 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/XMRigCore/include",
+					"$(PROJECT_DIR)/XMRigCore/build/xmrig-6.25.0/src",
+				);
+				INFOPLIST_FILE = "XMRigMiner-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/XMRigCore/output",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = XMRigMiner;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OBJC_BRIDGING_HEADER = "XMRigMiner-iOS/Sources/Bridge/XMRigMiner-iOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		5C58F25726E40E5A7FF686C5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
+				INFOPLIST_FILE = "XMRigMiner-iOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iml1s.xmrigminer;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
+			};
+			name = Release;
+		};
+		712A27DA531746F4C4E5BB7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/XMRigCore/include",
+					"$(PROJECT_DIR)/XMRigCore/build/xmrig-6.25.0/src",
+				);
+				INFOPLIST_FILE = "XMRigMiner-iOS/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(PROJECT_DIR)/XMRigCore/output",
+				);
+				MARKETING_VERSION = 1.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = XMRigMiner;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "XMRigMiner-iOS/Sources/Bridge/XMRigMiner-iOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		27489F42EFFB06D060C6CDFF /* Build configuration list for PBXNativeTarget "XMRigMiner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				16FBF24A3B4197CE98900E6F /* Debug */,
+				5C58F25726E40E5A7FF686C5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B60EF72BB9B748924548F954 /* Build configuration list for PBXProject "XMRigMiner-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				712A27DA531746F4C4E5BB7A /* Debug */,
+				3DCD48C3895016D6AFD97493 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A716BF52502408E62AFDADF3 /* Project object */;
+}
