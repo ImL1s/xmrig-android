@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XMRig Web Miner - 網頁版 Monero 礦工</title>
+  <meta name="description" content="Browser-based Monero (XMR) miner using RandomX algorithm">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">
+        <span class="logo-icon">⛏️</span>
+        <h1>XMRig Web Miner</h1>
+      </div>
+      <div class="badge">RandomX</div>
+    </header>
+
+    <!-- Status Card -->
+    <div class="card status-card">
+      <div class="status-indicator" id="statusIndicator">
+        <span class="status-dot"></span>
+        <span class="status-text" id="statusText">已停止</span>
+      </div>
+      <div class="hashrate-display">
+        <span class="hashrate-value" id="hashrateValue">0.00</span>
+        <span class="hashrate-unit">H/s</span>
+      </div>
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-label">已接受</span>
+          <span class="stat-value" id="acceptedShares">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">已拒絕</span>
+          <span class="stat-value" id="rejectedShares">0</span>
+        </div>
+        <div class="stat">
+          <span class="stat-label">運行時間</span>
+          <span class="stat-value" id="uptime">00:00:00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Configuration Card -->
+    <div class="card config-card">
+      <h2>⚙️ 設定</h2>
+      <div class="control-group">
+        <label for="wallet-address">Monero 錢包地址</label>
+        <input type="text" id="wallet-address" placeholder="4..." spellcheck="false">
+      </div>
+
+      <div class="control-row">
+        <div class="control-group">
+          <label for="pool-select">礦池選擇</label>
+          <select id="pool-select">
+            <option value="moneroocean">🌊 MoneroOcean (自動選幣，推薦)</option>
+            <option value="supportxmr">💪 SupportXMR</option>
+            <option value="hashvault">🔒 HashVault</option>
+            <option value="2miners">⛏️ 2Miners</option>
+            <option value="custom">🔧 自訂代理...</option>
+          </select>
+        </div>
+        <div class="control-group">
+          <label for="threads">執行緒數</label>
+          <select id="threads">
+            <option value="1">1 Thread</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="control-group custom-proxy-group" id="custom-proxy-group" style="display: none;">
+        <label for="custom-proxy-url">WebSocket 代理 URL</label>
+        <input type="text" id="custom-proxy-url" placeholder="ws://localhost:3333 或 wss://...">
+        <small class="hint">自訂代理需支援 Stratum-over-WebSocket 協議</small>
+      </div>
+
+      <div class="control-group">
+        <label for="worker-name">礦工名稱 (可選)</label>
+        <input type="text" id="worker-name" placeholder="web-worker">
+      </div>
+
+      <div class="actions">
+        <button id="start-btn" class="btn btn-primary">開始挖礦</button>
+        <button id="stop-btn" class="btn btn-secondary" disabled>停止</button>
+      </div>
+    </div>
+
+    <div class="stats-panel">
+      <div class="stat-card">
+        <div class="stat-label">當前算力</div>
+        <div class="stat-value"><span id="hashrate">0.0</span> H/s</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">已計算 Hashes</div>
+        <div class="stat-value" id="hashes">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Shares (接受/拒絕)</div>
+        <div class="stat-value" id="shares">0 / 0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">運行時間</div>
+        <div class="stat-value" id="uptime">00:00:00</div>
+      </div>
+    </div>
+
+    <div class="cpu-meter">
+      <div class="cpu-progress" id="cpu-usage" style="width: 0%"></div>
+    </div>
+
+    <div class="console">
+      <div class="console-header">系統日誌</div>
+      <div id="console-output" class="console-content"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>
+        基於 <a href="https://github.com/l1mey112/randomx.js" target="_blank">randomx.js</a> |
+        <a href="https://github.com/ImL1s/xmrig-android" target="_blank">GitHub</a>
+      </p>
+      <p class="disclaimer">
+        ⚠️ 免責聲明：挖礦會增加 CPU 負載，請自行評估風險
+      </p>
+    </footer>
+  </div>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+
+</html>
