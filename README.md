@@ -1,6 +1,8 @@
 # XMRig Miner (Android + Web)
 
-[![Android CI/CD](https://github.com/ImL1s/xmrig-android/actions/workflows/release.yml/badge.svg)](https://github.com/ImL1s/xmrig-android/actions/workflows/release.yml)
+[![Android CI](https://github.com/ImL1s/xmrig-android/actions/workflows/android-ci.yml/badge.svg)](https://github.com/ImL1s/xmrig-android/actions/workflows/android-ci.yml)
+[![Web Miner CI](https://github.com/ImL1s/xmrig-android/actions/workflows/web-miner-ci.yml/badge.svg)](https://github.com/ImL1s/xmrig-android/actions/workflows/web-miner-ci.yml)
+[![Release](https://github.com/ImL1s/xmrig-android/actions/workflows/release.yml/badge.svg)](https://github.com/ImL1s/xmrig-android/actions/workflows/release.yml)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 A **cross-platform** Monero (XMR) mining solution:
