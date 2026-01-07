@@ -6,6 +6,7 @@
 A **cross-platform** Monero (XMR) mining solution:
 - **📱 Android App**: Native Android miner based on XMRig 6.21.0 with Material Design 3 UI.
 - **🌐 Web Miner**: Browser-based miner using RandomX.js (WebAssembly), works on any platform.
+- **🍎 iOS App** (New!): Native iOS miner with SwiftUI - **Sideload only** (Apple prohibits mining apps).
 
 [繁體中文](README_zh-TW.md)
 
