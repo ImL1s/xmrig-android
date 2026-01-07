@@ -39,12 +39,20 @@ wss.on('connection', (ws, req) => {
     let selectedPoolKey = null;
     let fallbackIndex = 0;
     let pendingMessages = [];
+    let isConnecting = false;
 
     function connectToPool(poolConfig) {
+        if (isConnecting && pool && !pool.destroyed) {
+            console.log('[Pool] Connection already in progress, skipping');
+            return;
+        }
+
+        isConnecting = true;
         console.log(`[Pool] Connecting to ${poolConfig.name} (${poolConfig.host}:${poolConfig.port})...`);
 
         pool = net.createConnection(poolConfig.port, poolConfig.host, () => {
             console.log(`[Pool] ✅ Connected to ${poolConfig.name}`);
+            isConnecting = false;
 
             // Send any pending messages
             pendingMessages.forEach(msg => {
@@ -75,7 +83,9 @@ wss.on('connection', (ws, req) => {
 
         pool.on('error', (err) => {
             console.error(`[Pool] ❌ Error: ${err.message}`);
-            // Try fallback pools
+            isConnecting = false;
+
+            // Try fallback pools only if we haven't exhausted them
             fallbackIndex++;
             if (fallbackIndex < FALLBACK_POOLS.length) {
                 const fallbackKey = FALLBACK_POOLS[fallbackIndex];
@@ -86,6 +96,7 @@ wss.on('connection', (ws, req) => {
 
         pool.on('close', () => {
             console.log('[Pool] Connection closed');
+            isConnecting = false;
         });
     }
 

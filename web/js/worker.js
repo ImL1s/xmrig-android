@@ -102,44 +102,54 @@ function startMining() {
 
 /**
  * Check if the hash meets the difficulty target
+ * @param {Uint8Array} hash - The RandomX hash result (32 bytes)
+ * @param {string} targetHex - The target as hex string (4 or 64 chars)
+ * @returns {boolean} - True if hash beats the target (valid share)
  */
 function checkDifficulty(hash, targetHex) {
-    // targetHex is something like "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
-    // (diff 1). In Stratum, target is often 32-bit (diff) like "f33c0000"
-    // Real check: reversed hash as 256-bit number < target
+    // Convert hash to hex (reversed for big-endian comparison)
+    // Use slice() to avoid mutating the original array
+    const hashHex = uint8ArrayToHex(hash.slice().reverse());
 
-    // simplified check for demo/basic pool: 
-    // Usually target is the difficulty as a 32-bit number (mantissa + exponent)
-    // But for this web miner, we'll just check if it's "low enough"
-    // In a real implementation, we'd do the full 256-bit comparison.
+    // Normalize target to 64-char big-endian hex string
+    let target;
+    if (targetHex.length === 8) {
+        // 4-byte compact target (little endian) - convert to full 32-byte
+        target = padTarget(targetHex);
+    } else if (targetHex.length === 64) {
+        target = targetHex.toLowerCase();
+    } else {
+        // Fallback: normalize to 64 hex chars by left-padding
+        target = targetHex.toLowerCase().padStart(64, '0');
+    }
 
-    // Most pools send 4-byte target (little endian)
-    // For RandomX/Monero: Hash (reversed) < (2^256 / Difficulty)
-
-    // We'll use a simple check for now:
-    const hashHex = uint8ArrayToHex(hash.reverse());
-    // (Note: randomx returns hash in certain order, we might need to swap)
-
-    // Actually, let's just use the hex string comparison if lengths match
-    // since higher difficulty target means smaller value.
-    const target = targetHex.length < 64 ? padTarget(targetHex) : targetHex;
+    // Lexicographic comparison works for big-endian hex strings
     return hashHex <= target;
 }
 
-function padTarget(target) {
-    // Convert 4-byte target to 32-byte target
-    // e.g. "f33c0000" -> "00000000000000000000000000000000000000000000000000000000003cf300"
-    // Wait, Stratum target is usually 2^256 / diff
-    // For simplicity, let's just assume the target is 32-byte hex if the proxy supports it.
-    // If not, we'll need a better diff calc.
-    return target.padEnd(64, 'f'); // This is wrong but placeholder for now
+/**
+ * Convert 4-byte compact target (little endian) to 32-byte big-endian target
+ * @param {string} compactTargetHex - 8-char hex string (little endian 32-bit)
+ * @returns {string} - 64-char hex string (big-endian 256-bit)
+ */
+function padTarget(compactTargetHex) {
+    const hex = compactTargetHex.toLowerCase().padStart(8, '0');
+
+    // Parse as little-endian 32-bit value
+    const bytes = hexToUint8Array(hex);
+    const view = new DataView(bytes.buffer);
+    const value = view.getUint32(0, true); // little endian
+
+    // Convert to big-endian hex and pad to 64 chars
+    const beHex = value.toString(16).padStart(8, '0');
+    return beHex.padStart(64, '0');
 }
 
 // Helpers
 function hexToUint8Array(hex) {
     const arr = new Uint8Array(hex.length / 2);
     for (let i = 0; i < arr.length; i++) {
-        arr[i] = parseInt(hex.substr(i * 2, 2), 16);
+        arr[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
     }
     return arr;
 }

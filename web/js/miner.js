@@ -79,8 +79,8 @@ class Miner {
         this.log(`Pool: ${config.pool}`);
         this.log(`Threads: ${config.threads}`);
 
-        // Default proxy if none provided
-        const proxyUrl = config.proxy || 'wss://ny1.xmrminingproxy.com';
+        // Default proxy - use local proxy if none provided
+        const proxyUrl = config.proxy || 'ws://localhost:3333';
         this.proxy.connect(proxyUrl, config);
 
         this.startStatsTimer();
@@ -157,7 +157,7 @@ class Miner {
     hexToBytes(hex) {
         const bytes = new Uint8Array(hex.length / 2);
         for (let i = 0; i < bytes.length; i++) {
-            bytes[i] = parseInt(hex.substr(i * 2, 2), 16);
+            bytes[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
         }
         return bytes;
     }
@@ -184,12 +184,7 @@ class Miner {
             };
 
             // Send cache handle to worker
-            // Send cache handle to worker
-            const h = this.rxCache.handle;
-
-            // Note: DataCloneError diagnosis removed as COOP/COEP fixed it. 
-            // We just send the handle.
-
+            // Note: DataCloneError diagnosis removed as COOP/COEP fixed it.
             try {
                 worker.postMessage({ type: 'init', data: this.rxCache.handle });
             } catch (e) {
