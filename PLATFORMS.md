@@ -7,7 +7,7 @@ Cross-platform Monero/Wownero/DERO mining application.
 | Platform | Type | Status | Mining | Notes |
 |----------|------|--------|--------|-------|
 | **Android** | Mobile | ✅ Ready | ✅ Native XMRig | ARM64 native mining |
-| **iOS** | Mobile | ✅ Ready | ⚠️ Limited | Apple restricts background CPU |
+| **iOS** | Mobile | ✅ Ready | ⚠️ Limited | JIT blocked (3-5 H/s), see below |
 | **Web** | Browser | ✅ Ready | ✅ RandomX.js | WebSocket proxy required |
 | **macOS** | Desktop | ✅ Ready | ✅ Native XMRig | Full performance |
 | **Windows** | Desktop | ✅ Ready | ✅ Native XMRig | Full performance |
@@ -150,9 +150,52 @@ open XMRigWatch.xcodeproj
 | Desktop (Apple M2) | 2,500+ H/s | Medium | Efficient |
 | Android (SD 8 Gen 2) | 800-1,200 H/s | Medium | Thermal throttling |
 | Web (Chrome) | 100-200 H/s | Low | JavaScript limitations |
-| iOS | Limited | Low | Background restrictions |
+| iOS (no JIT) | 3-5 H/s | Low | Interpreted mode |
+| iOS (JIT enabled) | 200-400 H/s | Medium | Requires SideStore+StikDebug |
 | WearOS | N/A | - | Companion only |
 | watchOS | N/A | - | Companion only |
+
+---
+
+## iOS JIT Restrictions
+
+### The Problem
+
+Apple blocks JIT (Just-In-Time) compilation on iOS for security reasons. RandomX algorithm heavily relies on JIT for performance:
+
+| Mode | Hashrate | Description |
+|------|----------|-------------|
+| JIT (compiled) | 200-400 H/s | Native machine code execution |
+| Interpreted | 3-5 H/s | ~50-100x slower |
+
+### iOS Versions
+
+- **iOS 17.3 and earlier**: JIT possible via Xcode debug mode
+- **iOS 17.4+**: Apple completely blocked JIT, even in debug mode
+- **iOS 18+**: Same restrictions apply
+
+### Solutions
+
+#### Option 1: Accept Low Performance
+Just use the app as-is with ~3-5 H/s. Mining will work, just very slowly.
+
+#### Option 2: SideStore + StikDebug (Recommended)
+For non-TXM devices (iPhone 11 and older, 4+ years old):
+
+1. Install [SideStore](https://sidestore.io) via [iLoader](https://github.com/nab138/iloader)
+2. Install [StikDebug](https://github.com/StephenDev0/StikDebug) from SideStore
+3. Enable JIT for XMRigMiner in StikDebug
+4. Launch XMRigMiner - JIT will be enabled
+
+> **Note**: TXM (Trusted Execution Monitor) devices (iPhone 12/A14 and newer) cannot use this method.
+
+### Why Native XMRig Still Matters
+
+Even with low hashrate, native XMRig provides:
+- Real mining functionality (accepted shares confirmed)
+- Proper pool communication
+- Accurate statistics
+- Foundation for future improvements
 
 ---
 

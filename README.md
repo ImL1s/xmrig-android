@@ -115,14 +115,17 @@ Native Layer (JNI → C++ XMRig)
 
 ## Expected Performance
 
-| Platform | Device | Hashrate |
-|----------|--------|----------|
-| Android | Snapdragon 8 Gen 2 | 800-1200 H/s |
-| Android | Snapdragon 865 | 500-800 H/s |
-| iOS | iPhone 15 Pro | 600-900 H/s |
-| Desktop | AMD Ryzen 9 | 15,000+ H/s |
-| Desktop | Apple M2 | 2,500+ H/s |
-| Web | Modern browser | 40-120 H/s |
+| Platform | Device | Hashrate | Notes |
+|----------|--------|----------|-------|
+| Android | Snapdragon 8 Gen 2 | 800-1200 H/s | Native XMRig |
+| Android | Snapdragon 865 | 500-800 H/s | Native XMRig |
+| iOS | iPhone 11+ | 3-5 H/s | JIT blocked by iOS |
+| iOS | iPhone 11+ (JIT enabled) | 200-400 H/s | Requires SideStore+StikDebug |
+| Desktop | AMD Ryzen 9 | 15,000+ H/s | Full JIT support |
+| Desktop | Apple M2 | 2,500+ H/s | Full JIT support |
+| Web | Modern browser | 40-120 H/s | WASM, no JIT |
+
+> **iOS Note**: Apple blocks JIT compilation on iOS 17.4+. Without JIT, RandomX runs in interpreted mode (~3-5 H/s). To enable JIT (~200+ H/s), use [SideStore](https://sidestore.io) + [StikDebug](https://github.com/StephenDev0/StikDebug). See [PLATFORMS.md](PLATFORMS.md) for details.
 
 > Note: Actual hashrate depends on device, cooling, and background processes.
 
