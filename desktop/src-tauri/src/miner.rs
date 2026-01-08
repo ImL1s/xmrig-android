@@ -214,3 +214,37 @@ fn get_os_version() -> String {
             .unwrap_or_else(|| "Linux".to_string())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_mining_config_serialization() {
+        let config = MiningConfig {
+            pool_url: "localhost:3333".to_string(),
+            wallet_address: "address".to_string(),
+            worker_name: "worker".to_string(),
+            threads: 4,
+            coin_type: "XMR".to_string(),
+            algorithm: "rx/0".to_string(),
+        };
+        let serialized = serde_json::to_string(&config).unwrap();
+        let deserialized: MiningConfig = serde_json::from_str(&serialized).unwrap();
+        assert_eq!(config.pool_url, deserialized.pool_url);
+    }
+
+    #[test]
+    fn test_system_info_retrieval() {
+        let info = get_system_info();
+        assert!(!info.cpu_name.is_empty());
+        assert!(info.cpu_cores > 0);
+        assert!(!info.os_name.is_empty());
+    }
+
+    #[test]
+    fn test_xmrig_path() {
+        let path = get_xmrig_path();
+        assert!(path.contains("xmrig"));
+    }
+}
