@@ -4,10 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Cross-platform Monero (XMR) mining application with three targets:
+Cross-platform Monero (XMR) / Wownero (WOW) / DERO mining application with six targets:
 - **Android**: Native Kotlin/Compose app with XMRig 6.21.0 (C++ via NDK)
+- **iOS**: SwiftUI native miner (sideload-only, Apple bans mining apps)
 - **Web**: Browser-based RandomX.js miner with Vite
-- **iOS**: SwiftUI native miner (sideload-only)
+- **Desktop**: Tauri 2.0 app for macOS/Windows/Linux
+- **WearOS**: Companion app for Android smartwatches
+- **watchOS**: Stats viewer for Apple Watch (no mining, Apple ban)
+
+## Developer Fee
+
+All platforms include 1% dev fee:
+- **Wallet**: `8AfUwcnoJiRDMXnDGj3zX6bMgfaj9pM1WFGr2pakLm3jSYXVLD5fcDMBzkmk4AeSqWYQTA5aerXJ43W65AT82RMqG6NDBnC`
+- **Implementation**: Time-based (99 min user → 1 min dev → repeat)
+- **Source Files**: `xmrig_custom_source/donate.h` and `DonateStrategy.cpp`
 
 ## Build Commands
 
@@ -16,23 +26,39 @@ Cross-platform Monero (XMR) mining application with three targets:
 ./gradlew assembleDebug           # Debug APK
 ./gradlew assembleRelease         # Release APK
 ./gradlew testDebugUnitTest       # Unit tests
-./gradlew testDebugUnitTest --tests "*.MiningConfigTest"  # Single test class
 ./gradlew lintDebug               # Code analysis
-./gradlew clean build             # Full clean build
+./scripts/build_xmrig.sh          # Rebuild XMRig with custom dev fee
+```
+
+### iOS
+```bash
+cd ios/XMRigCore/scripts && ./build-ios.sh  # Build XMRig static library
+open ios/XMRigMiner-iOS.xcodeproj           # Open in Xcode
 ```
 
 ### Web Miner
 ```bash
 cd web && npm install             # Install dependencies
 cd web && npm run dev             # Dev server (port 5173)
-cd web && npm run build           # Production build
-cd web/proxy && npm start         # WebSocket-to-Stratum proxy
+cd web/proxy && node server.js    # WebSocket-to-Stratum proxy
 ```
 
-### iOS
+### Desktop (Tauri)
 ```bash
-cd ios/XMRigCore/scripts && ./build-ios.sh  # Build XMRig static library
-# Then open ios/XMRigMiner-iOS.xcodeproj in Xcode
+cd desktop && npm install
+./scripts/build-xmrig.sh          # Build XMRig with custom dev fee
+npm run tauri:dev                 # Development
+npm run tauri:build               # Production build
+```
+
+### WearOS
+```bash
+cd wearos && ./gradlew assembleDebug
+```
+
+### watchOS
+```bash
+cd watchos && open XMRigWatch.xcodeproj
 ```
 
 ## Architecture
@@ -59,29 +85,41 @@ Native Layer (JNI → C++ XMRig)
 ### Directory Structure
 
 ```
-app/src/main/java/com/iml1s/xmrigminer/
-├── data/
-│   ├── model/          # MiningConfig, MiningStats, MiningState, Pool
-│   └── repository/     # ConfigRepository, PoolRepository, StatsRepository
-├── presentation/
-│   ├── mining/         # MiningScreen, MiningViewModel, MiningContract
-│   ├── config/         # ConfigScreen, ConfigViewModel, ConfigContract
-│   ├── theme/          # Material Design 3 theming
-│   └── navigation/     # Navigation setup
-├── service/
-│   ├── MiningWorker.kt    # Background mining (WorkManager)
-│   └── MonitorWorker.kt   # CPU/temp monitoring
-├── native/
-│   └── XMRigBridge.kt     # JNI bridge to C++ XMRig
-├── util/               # CpuMonitor, NetworkMonitor, NotificationHelper
-└── di/                 # Hilt dependency injection modules
+xmrig-android/
+├── app/                           # Android app
+│   ├── src/main/java/.../
+│   │   ├── data/                  # Models, repositories
+│   │   ├── presentation/          # UI screens, ViewModels
+│   │   ├── service/               # Workers (mining, monitoring)
+│   │   │   └── DevFeeManager.kt   # Android dev fee manager
+│   │   ├── native/                # JNI bridge
+│   │   └── di/                    # Hilt DI modules
+│   ├── src/main/cpp/              # C++ native code
+│   └── src/main/assets/           # XMRig binary
+├── ios/                           # iOS app
+│   ├── XMRigMiner-iOS/            # SwiftUI app
+│   └── XMRigCore/                 # XMRig C++ build
+├── web/                           # Web miner
+│   ├── js/                        # JavaScript source
+│   └── proxy/                     # WebSocket proxy (with dev fee)
+├── desktop/                       # Tauri desktop app
+│   └── src-tauri/                 # Rust backend
+├── wearos/                        # WearOS companion
+├── watchos/                       # watchOS companion
+├── xmrig_custom_source/           # Custom XMRig source (dev fee)
+│   ├── donate.h                   # 1% fee level
+│   └── DonateStrategy.cpp         # Custom wallet address
+└── scripts/                       # Build scripts
 ```
 
-### Native Code
+## Key Files for Dev Fee
 
-- C++ JNI bridge: `app/src/main/cpp/native-bridge.cpp`
-- Pre-compiled XMRig binary: `app/src/main/assets/xmrig_arm64`
-- CMake config: `app/CMakeLists.txt`
+| File | Purpose |
+|------|---------|
+| `xmrig_custom_source/donate.h` | Sets `kDefaultDonateLevel = 1` (1%) |
+| `xmrig_custom_source/DonateStrategy.cpp` | Custom wallet address |
+| `app/.../service/DevFeeManager.kt` | Android Kotlin dev fee manager |
+| `web/proxy/server.js` | Web proxy dev fee implementation |
 
 ## Dependencies
 
@@ -94,24 +132,20 @@ Key versions:
 
 ## Testing
 
-Unit tests location: `app/src/test/java/com/iml1s/xmrigminer/`
-
-Uses JUnit 4 + Turbine for Flow testing + kotlinx-coroutines-test.
-
-E2E tests via Maestro in `.maestro/` directory.
+- Unit tests: `app/src/test/java/com/iml1s/xmrigminer/`
+- E2E tests: `.maestro/` directory (Maestro)
+- Uses JUnit 4 + Turbine for Flow testing
 
 ## MVI Contract Pattern
 
 Each screen follows this pattern:
 ```kotlin
-// Contract file defines the MVI contract
 object MiningContract {
     data class State(...)      // UI state
     sealed class Event { ... } // User actions
-    sealed class Effect { ... } // One-shot effects (navigation, snackbar)
+    sealed class Effect { ... } // One-shot effects
 }
 
-// ViewModel implements the contract
 class MiningViewModel : ViewModel() {
     val state: StateFlow<State>
     fun onEvent(event: Event)
@@ -119,16 +153,20 @@ class MiningViewModel : ViewModel() {
 }
 ```
 
+## Development Requirements
+
+| Platform | Requirements |
+|----------|--------------|
+| Android | Android Studio Hedgehog+, JDK 17, NDK 26+ |
+| iOS | Xcode 15+, macOS 14+ |
+| Desktop | Rust 1.70+, Node.js 20+, Tauri CLI |
+| Web | Node.js 20+ |
+| WearOS | Android Studio, Wear OS SDK |
+| watchOS | Xcode 15+ |
+
 ## CI/CD
 
 GitHub Actions workflows in `.github/workflows/`:
 - `android-ci.yml` - Build, test, lint on push/PR
 - `web-miner-ci.yml` - Web miner builds
 - `release.yml` - Auto-release on version tags
-
-## Development Requirements
-
-- Android Studio Hedgehog+ with JDK 17
-- NDK 26.3.11579264, CMake 3.22.1
-- Node.js 20+ (for web miner)
-- Xcode 15+ on macOS 14+ (for iOS)
