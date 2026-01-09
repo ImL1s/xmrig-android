@@ -132,3 +132,6 @@ dist/
 /desktop/src-tauri/Cargo.lock
 /desktop/src-tauri/binaries/xmrig-x86_64-unknown-linux-gnu
 
+# IDE settings
+.vscode/
+
